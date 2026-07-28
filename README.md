@@ -43,11 +43,21 @@ The one real trace of a programmatic interface is a checkbox labelled **"Request
 | NDC posture | Absent — no certification claimed, no NDC endpoint, no GDS surcharge published; Rex is not in Duffel's NDC-certified listing while Qantas is |
 | Access gate | `accredited-or-licensed` — ABN, Australian travel agency licence number, IATA/DAPA/TIDS accreditation, agency bank/BSB details, and an RCTI/GST agreement, before an undocumented API request is even considered |
 
+## Artifacts
+
+| Artifact | File | Method | Finding |
+| --- | --- | --- | --- |
+| Domain security | [security/rex-airlines-domain-security.yml](security/rex-airlines-domain-security.yml) | probed | TLS 1.3 on four of five hosts (Rex Flyer still TLS 1.2); no HSTS on `www` or the loyalty host; no CAA and no DNSSEC on either domain; `rex.com.au` DMARC is `p=none`; `rexflyer.com.au` publishes no SPF and no DMARC at all. |
+| Well-known | [well-known/rex-airlines-well-known.yml](well-known/rex-airlines-well-known.yml) | probed | Recorded negative — no `/.well-known/` surface (security.txt, OIDC, RFC 8414, api-catalog, ai-plugin) and no `/llms.txt` on any of the five hosts. No pointer wired, because nothing exists. |
+| llms.txt | [llms/rex-airlines-llms.txt](llms/rex-airlines-llms.txt) | generated | Written by API Evangelist from this catalog record — Rex publishes none. States the no-API posture plainly and separates third-party Rex data resellers (Aviation Edge, Airhex, Flightera) from anything Rex itself offers. |
+
+No packages, SDKs, CLI, MCP server, OpenAPI, AsyncAPI, changelog, status page, trust centre or vulnerability-disclosure programme was found. Those artifacts are absent from this repo rather than stubbed — an empty result is a real result.
+
 ## Common
 
 - [Website](https://www.rex.com.au/)
 - [Travel Agent Portal](https://www.rex.com.au/TravelAgent/Index.aspx)
-- [Travel Agent Registration](https://www.rex.com.au/TravelAgent/agentregistration.aspx)
+- [Travel Agent Registration](https://www.rex.com.au/TravelAgent/agentregistration.aspx) — also wired as `SignUp`; the only published route to programmatic access
 - [Travel Agent FAQ](https://www.rex.com.au/TravelAgent/faq.aspx)
 - [Booking Engine](https://ibe2.rex.com.au/)
 - [Manage Booking](https://mbe.rex.com.au/)
@@ -61,7 +71,7 @@ The one real trace of a programmatic interface is a checkbox labelled **"Request
 - [Freight](https://www.rex.com.au/Products_Promo/Freight/Default.aspx)
 - [Corporate](https://www.rex.com.au/Corporate/)
 - [About](https://www.rex.com.au/AboutRex/OurCompany/overview.aspx)
-- [Contact Us](https://www.rex.com.au/FeedBack/ContactUs.aspx)
+- [Contact Us](https://www.rex.com.au/FeedBack/ContactUs.aspx) — also wired as `Support`
 - [Media Releases](https://www.rex.com.au/MediaAndCommunications/)
 - [LinkedIn](https://au.linkedin.com/company/regional-express/)
 - [Twitter](https://twitter.com/rexairlines)

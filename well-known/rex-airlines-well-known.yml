@@ -1,0 +1,55 @@
+generated: '2026-07-28'
+method: probed
+source: live HTTP probes of every Rex host published in apis.yml
+result: none
+note: >-
+  Rex Airlines publishes no /.well-known/ discovery surface on any of its
+  hosts. Every RFC 9116 security.txt, OIDC discovery, RFC 8414 authorization
+  server metadata, RFC 9727 api-catalog and ai-plugin.json probe returned 404
+  (or, on the vendor-hosted flights.rex.com.au, 403/502 from the AirTRFX edge).
+  /llms.txt is likewise absent everywhere. This is a recorded negative result,
+  not a gap in the probe — and because nothing was found, no `WellKnown`,
+  `SecurityTxt` or `APICatalog` pointer is wired into apis.yml.
+documents: []
+probes:
+- host: https://www.rex.com.au
+  results:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://ibe2.rex.com.au
+  results:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://mbe.rex.com.au
+  results:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://flights.rex.com.au
+  note: EveryMundo / AirTRFX edge; 403 on text paths, 502 on the rest.
+  results:
+  - {path: /.well-known/security.txt, status: 403}
+  - {path: /.well-known/openid-configuration, status: 502}
+  - {path: /.well-known/oauth-authorization-server, status: 502}
+  - {path: /.well-known/api-catalog, status: 502}
+  - {path: /.well-known/ai-plugin.json, status: 502}
+  - {path: /llms.txt, status: 403}
+- host: https://www.rexflyer.com.au
+  results:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /llms.txt, status: 404}

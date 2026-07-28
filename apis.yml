@@ -32,7 +32,7 @@ accessModel:
   - travel-agent-portal
   generated: '2026-07-28'
   method: manual
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/groq.png
+image: https://www.rex.com.au/v8/_lib/menu/img/rexlogo.png
 tags:
 - Travel
 - Australia
@@ -49,11 +49,17 @@ modified: '2026-07-28'
 specificationVersion: '0.19'
 apis: []
 common:
+- type: DomainSecurity
+  url: security/rex-airlines-domain-security.yml
+- type: LLMsTxt
+  url: llms/rex-airlines-llms.txt
 - type: Website
   url: https://www.rex.com.au/
 - type: TravelAgentPortal
   url: https://www.rex.com.au/TravelAgent/Index.aspx
 - type: TravelAgentRegistration
+  url: https://www.rex.com.au/TravelAgent/agentregistration.aspx
+- type: SignUp
   url: https://www.rex.com.au/TravelAgent/agentregistration.aspx
 - type: TravelAgentFAQ
   url: https://www.rex.com.au/TravelAgent/faq.aspx
@@ -82,6 +88,8 @@ common:
 - type: About
   url: https://www.rex.com.au/AboutRex/OurCompany/overview.aspx
 - type: ContactUs
+  url: https://www.rex.com.au/FeedBack/ContactUs.aspx
+- type: Support
   url: https://www.rex.com.au/FeedBack/ContactUs.aspx
 - type: MediaReleases
   url: https://www.rex.com.au/MediaAndCommunications/
