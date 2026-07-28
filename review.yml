@@ -1,0 +1,456 @@
+aid: rex-airlines
+name: Rex Airlines
+review:
+  question: >-
+    Does Rex Airlines publish a public developer portal, documented API, or NDC
+    distribution surface — and what would it cost a customer to leave?
+  answer: false
+  date: '2026-07-28'
+  reviewer: API Evangelist
+  tier: airline
+  homeMarket: Australia
+  primaryDomain: rex.com.au
+findings:
+  summary: |
+    Rex Airlines publishes no developer portal, no API documentation, no OpenAPI
+    or other machine-readable contract, and makes no reference to IATA NDC
+    anywhere on rex.com.au. Every developer-convention subdomain fails DNS
+    (developer., developers., api., docs.) and every conventional spec path
+    returns 404. The site does not even serve /robots.txt or /sitemap.xml.
+
+    The one real, verifiable trace of a programmatic interface is a checkbox
+    labelled "Request API Access" (input id `ContentPlaceHolder1_cbAPI`) on the
+    Travel Agent registration form. It sits below a mandatory "Travel Agency ID
+    number (IATA, DAPA or TIDS)" field. There is no linked specification, no
+    name for the API, no base URL, no terms, and no pricing. A developer cannot
+    evaluate this interface before signing; they can only tick a box, submit an
+    ABN, an Australian travel agency licence number, an accreditation number and
+    full bank/BSB details, and wait for approval. Because nothing about it is
+    documented, it is deliberately NOT listed in apis[].
+
+    Trade distribution is a web portal, not a machine interface. Agents log in
+    at /TravelAgent/Index.aspx and book, amend and pull statements through HTML
+    screens. The published FAQ states statements "are updated every 24 hours and
+    are kept on the Rex server for a period of 2 months", with download limited
+    to "the last 4 months" — a hard, published ceiling on how much of an agency's
+    own transaction history it can retrieve.
+  probes:
+    - url: https://www.rex.com.au/
+      status: 200
+      note: Live ASP.NET WebForms site. No developer, API, or partner-API link in nav or footer.
+    - url: https://developer.rex.com.au/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://developers.rex.com.au/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://api.rex.com.au/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://docs.rex.com.au/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://www.rex.com.au/developers
+      status: 404
+    - url: https://www.rex.com.au/api
+      status: 404
+    - url: https://www.rex.com.au/docs
+      status: 404
+    - url: https://www.rex.com.au/openapi.json
+      status: 404
+    - url: https://www.rex.com.au/swagger.json
+      status: 404
+    - url: https://www.rex.com.au/api-docs
+      status: 404
+    - url: https://www.rex.com.au/.well-known/security.txt
+      status: 404
+    - url: https://www.rex.com.au/.well-known/apis.json
+      status: 404
+    - url: https://www.rex.com.au/robots.txt
+      status: 404
+    - url: https://www.rex.com.au/sitemap.xml
+      status: 404
+    - url: https://www.rex.com.au/TravelAgent/Index.aspx
+      status: 200
+      note: >-
+        Travel agent login. Login identity is an "IATA, DAPA or TIDS" number, and
+        the page states "this number cannot be changed for this registration in
+        the future".
+    - url: https://www.rex.com.au/TravelAgent/agentregistration.aspx
+      status: 200
+      note: >-
+        Agent registration form. Contains the "Request API Access" checkbox
+        (`ContentPlaceHolder1_cbAPI`). Requires ABN, Travel Agency Licence
+        Number, IATA/DAPA/TIDS number, agency bank name/BSB/account number, and
+        acceptance of a recipient-created-tax-invoice (RCTI) agreement with
+        Regional Express Holdings Pty Ltd (ACN 099 547 270).
+    - url: https://www.rex.com.au/TravelAgent/faq.aspx
+      status: 200
+      note: >-
+        Agent operating rules. Ticketless, instant-purchase, no held bookings.
+        Statements retained 2 months on server, downloadable for last 4 months.
+    - url: https://ibe2.rex.com.au/
+      status: 200
+      note: >-
+        Rex's own internet booking engine ("Rex Flight Booking"). ASP.NET, jQuery,
+        Mastercard SRC and CarTrawler embeds. No swagger/openapi/api-docs (all 404).
+    - url: https://mbe.rex.com.au/
+      status: 200
+      note: '"Rex Manage My Booking". No spec paths (openapi.json, swagger.json both 404).'
+    - url: https://flights.rex.com.au/
+      status: 200
+      note: >-
+        Redirects to /en/. Served by EveryMundo / AirTRFX (airtrfx.com,
+        everymundo.net assets) — an SEO fare-page product, not a bookable API.
+        /openapi.json, /swagger.json, /api-docs all return 502.
+    - url: https://webcheck.rex.com.au/
+      status: 404
+    - url: https://www.rexflyer.com.au/
+      status: 200
+      note: Rex Flyer loyalty. /openapi.json and /swagger.json both 404.
+    - url: https://booking.rex.com.au/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://agent.rex.com.au/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://agents.rex.com.au/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://ws.rex.com.au/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://webservices.rex.com.au/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://rexapi.rex.com.au/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/rex-airlines.png
+      status: 403
+      note: No provider icon in the shared bucket yet; placeholder image used.
+    - url: https://www.sabre.com/locations/apac/releases/rex-regional-express-enhances-long-term-sabre-pss-deal-to-power-rapid-domestic-and-regional-expansion/
+      status: 200
+      note: >-
+        Body returned an Imperva/Incapsula bot-block page, not the release.
+        Content of the release verified instead via asiatraveltips.com mirror
+        (HTTP 200) and CAPA headline.
+switchingCost:
+  interfaceShape:
+    value: proprietary-undocumented
+    standardNamed: none
+    evidence: >-
+      No standard is referenced anywhere on rex.com.au. Case-insensitive grep of
+      every fetched Rex page (home, travel agent portal, agent registration,
+      agent FAQ, corporate, conditions of carriage, site terms, privacy, Rex
+      Flyer T&C, booking engine, manage-my-booking) found zero real matches for
+      "NDC", "New Distribution Capability", "Global Distribution System",
+      "Sabre", "Amadeus" or "Travelport". No OpenTravel/OTA, no HTNG, no OAuth
+      metadata, no JSON Schema, no WSDL. The only interface signal published is
+      the unlabelled "Request API Access" checkbox on the agent registration
+      form, which names no protocol and links to no specification. That is the
+      definition of proprietary-undocumented: a would-be integrator cannot know
+      what they are integrating with until after they are accredited and
+      approved.
+  secondSource:
+    value: no-alternative
+    alternativesConsidered: >-
+      For Rex's own seat inventory there is no second source. Rex is the sole
+      operator on the large majority of its ~45 regional destinations — many are
+      thin regional routes with no competing scheduled carrier at all. The
+      alternatives considered and rejected: (1) Qantas/QantasLink, which
+      overlaps on only part of the network and is a different carrier's
+      inventory, not a substitute source of Rex inventory; (2) Virgin Australia,
+      which does not fly most Rex regional ports; (3) GDS/aggregator resale
+      (Sabre, Amadeus, Travelport, Duffel, Kiwi) — these can only resell what
+      Rex chooses to file, and Rex publishes no NDC endpoint of its own, so an
+      aggregator is a re-intermediation of the same single source, not an
+      independent one; (4) scraping rex.com.au, which the Site Terms expressly
+      forbid. On the buy side of the same question, Rex itself has one supplier
+      for its passenger service system — Sabre — and replacing SabreSonic would
+      be a full PSS migration, the most expensive project an airline of this
+      size can undertake.
+  exitPath:
+    value: export-on-request
+    operationCited: none
+    evidence: >-
+      No export, dump, bulk or data-portability operation is published. The only
+      documented data-out mechanisms are (a) the agent portal statement
+      download, explicitly capped — "All online statements are updated every 24
+      hours and are kept on the Rex server for a period of 2 months. Anytime
+      within this period you are able to download your statement for the last 4
+      months." (Travel Agent FAQ); and (b) a manual privacy-law right — "You
+      have a right to request access and correct the personal information that
+      we hold about you... please contact us, either by calling our Customer
+      Contact Centre or making an online request." (Privacy Policy, s.10
+      "Accessing and Updating Personal Information", under the Privacy Act 1988
+      (Cth) and the Australian Privacy Principles). Australia's APP 12 confers
+      an access right but, unlike GDPR Article 20, no general right to a
+      machine-readable portable copy — so there is no implemented portability
+      obligation behind this.
+  identifierPortability:
+    value: >-
+      Shared industry identifiers at the edges, proprietary keys in the middle.
+    evidence: >-
+      Portable/shared identifiers found: IATA airline designator ZL and ICAO RXA
+      (callsign REX); IATA three-letter airport codes throughout the network and
+      schedule pages; and IATA/TIDS agency accreditation numbers used as agent
+      login identity (alongside DAPA, an Australian domestic agency designator
+      that does not travel outside the Australian market). Non-portable
+      identifiers found: the "Booking Reloc" (record locator) exposed on the
+      agent statement — a PNR locator that is meaningful only inside Rex's
+      SabreSonic host and cannot be resolved by any other system; the Rex Flyer
+      membership number and Rex Points balance, which the loyalty terms state
+      "have no cash value and cannot be transferred, redeemed or converted to
+      cash"; and per-consultant free-text "Consultant Name" strings that agents
+      must type into each booking to earn commission, with no consultant ID
+      scheme at all. No GIATA, no hotel chain code, no ARC number (US-only), no
+      GDS-neutral order ID.
+  contractualLockIn:
+    published: partial
+    verbatim:
+      - source: https://www.rex.com.au/TravelAgent/agentregistration.aspx
+        quote: >-
+          Regional Express Holdings Pty Ltd, t/as Regional Express (ACN 099 547
+          270) accepts the terms and conditions set out below and also agrees to
+          those terms and conditions. (a) Australiawide can issue GST tax
+          invoices in respect of the some of the goods or services provided by
+          the Agent to Australiawide. (b) The Agent will not issue GST tax
+          invoices in respect of the Supplies made by it to Australiawide for
+          which it receives a recipient created tax invoice.
+        note: >-
+          This is the entire agent agreement published before signup — a
+          recipient-created-tax-invoice (RCTI) clause plus a credit-card
+          surcharge pass-through clause. No API terms, no SLA, no rate limits,
+          no termination notice, no exclusivity clause, and no full-content
+          commitment are published anywhere.
+      - source: https://www.rex.com.au/TravelAgent/faq.aspx
+        quote: >-
+          Only online bookings made while you are logged on to your account will
+          be credited towards your sales incentive entitlement.
+        note: >-
+          Commission is conditional on transacting inside Rex's own portal
+          session. Booking Rex any other way forfeits the agent's incentive —
+          a direct economic penalty on using an alternative channel.
+      - source: https://www.rex.com.au/TravelAgent/faq.aspx
+        quote: >-
+          Payment will only be processed when your sales incentive balance
+          exceeds AUD$125... This transfer will incur a AUD$25.00 bank fee which
+          will be deducted from the payment.
+        note: >-
+          International agents' earned commission is withheld below a threshold —
+          money owed sits with Rex until the agent transacts enough more.
+      - source: https://www.rex.com.au/TravelAgent/Index.aspx
+        quote: >-
+          Travel Agents Login (IATA, DAPA or TIDS – this number cannot be changed
+          for this registration in the future)
+        note: >-
+          Immutable accreditation identity. An agency that changes accreditation
+          scheme or number cannot carry its Rex registration, history or
+          statements across.
+      - source: https://www.rex.com.au/rexflyer/RexFlyerTC.aspx
+        quote: >-
+          Rex Points have no cash value and cannot be transferred, redeemed or
+          converted to cash.
+      - source: https://www.rex.com.au/rexflyer/RexFlyerTC.aspx
+        quote: >-
+          Rex Points expire on a rolling 36-month basis from when they were
+          earned if there is no ongoing activity. You must earn into, or redeem
+          from, your account to be deemed 'active'. This does not include point
+          transfers.
+        note: >-
+          Consumer-side lock-in: stored value decays unless the member keeps
+          flying Rex. Transfers explicitly do not reset the clock.
+      - source: https://www.rex.com.au/rexflyer/RexFlyerTC.aspx
+        quote: >-
+          We reserve the right to make changes, suspend or terminate Rex Flyer,
+          and its Terms and Conditions, without notice.
+      - source: https://www.rex.com.au/FlightInfo/COC.aspx
+        quote: >-
+          The travel must be completed within 12 months of date of issue of the
+          Ticket and is not be transferable to any other person unless permitted
+          under the Fare Rules.
+      - source: https://www.rex.com.au/site_terms.aspx
+        quote: >-
+          use or attempt to use any robot, spider, automatic device, or automatic
+          or manual process to monitor or copy the Sites without Rex' prior
+          express written consent
+        note: >-
+          Closes the only remaining programmatic route. With no public API and
+          no NDC endpoint, automated access to Rex content requires written
+          consent — so the accreditation gate is the sole legitimate path in.
+    notPublished:
+      - Minimum term or notice period for agent registration
+      - Termination or revocation terms for API access
+      - Exclusivity or full-content commitments
+      - Segment fees or GDS surcharges (none published either way)
+      - Any API rate limit, SLA, uptime or deprecation policy
+      - Pricing for API access
+  accessGate:
+    value: accredited-or-licensed
+    whatADeveloperMustDo: >-
+      Register at /TravelAgent/agentregistration.aspx as a travel agency —
+      not as a developer. Mandatory fields include agency name, a
+      TravelAgencyGroup selected from a fixed list (Flight Centre entities,
+      Corporate Travel Management, Helloworld, Express Travel Group, Travellers
+      Choice, AMEX, BCD, CWT, Egencia and ~50 more, plus "Independent
+      Agencies"), an ABN, an Australian Travel Agency Licence Number, and a
+      Travel Agency ID number that must be an IATA, DAPA or TIDS accreditation.
+      Full agency bank details (bank name, address, account name, BSB, account
+      number) are mandatory because commission is paid by direct deposit. The
+      applicant must accept the RCTI/GST terms and the credit-card surcharge
+      pass-through. API access is then requested by ticking a single checkbox
+      labelled "Request API Access" — with no documentation, no terms and no
+      pricing disclosed at any point before submission. Approval is manual and
+      unpublished; Rex communicates only to the nominated registration email.
+  distributionModel:
+    value: gds-intermediated
+    evidence: >-
+      Rex operates on Sabre's SabreSonic passenger solutions suite. Sabre's
+      2 February 2021 announcement (verified via the asiatraveltips.com mirror,
+      HTTP 200, and the CAPA headline; sabre.com itself served an Incapsula
+      bot-block) states the expanded agreement gave Rex "an expanded range of IT
+      capabilities across SabreSonic Inventory, Reservations, Ticketing,
+      Ancillaries and Check-in". Inventory, reservations and ticketing therefore
+      live inside a GDS vendor's host, which is what makes Rex's seats reachable
+      by agencies at all. Rex layers two direct channels on top: its own
+      ibe2.rex.com.au booking engine for consumers, and the HTML Travel Agent
+      portal for accredited trade. Rex's own site never names Sabre, a GDS, or
+      any distribution partner.
+  ndcPosture:
+    value: >-
+      No NDC anywhere. No certification claimed, no NDC endpoint published, no
+      GDS surcharge published.
+    evidence: >-
+      "NDC" and "New Distribution Capability" appear nowhere on rex.com.au. Rex
+      does not appear in the NDC-certified airline listings maintained by Duffel
+      (https://duffel.com/ndc/airlines-and-ndc), which does list Qantas among
+      Australian carriers. Virgin Australia has publicly selected Sabre for its
+      future NDC connection; Rex has made no equivalent statement. Rex publishes
+      no GDS surcharge and no direct-booking incentive beyond agent commission,
+      so there is no published price signal steering agents off the GDS. Rex's
+      NDC posture is therefore best described as absent rather than early — the
+      restructuring IATA NDC exists to enable has not begun here.
+  consumerVersusDistributionSurface:
+    consumer: >-
+      Booking (ibe2.rex.com.au), manage-my-booking (mbe.rex.com.au), web
+      check-in (webcheck.rex.com.au, currently 404), schedules, flight status
+      and the Rex Flyer loyalty program (rexflyer.com.au). All HTML/session
+      web applications. No public consumer API of any kind — no flight status
+      API, no schedule feed, no loyalty API.
+    distribution: >-
+      The accredited Travel Agent portal at /TravelAgent/Index.aspx, plus
+      whatever sits behind the "Request API Access" checkbox, plus the
+      SabreSonic host that carries Rex inventory to the GDS. Nothing on this
+      surface is publicly documented.
+    marketNote: >-
+      The wider Australian market context matters for switching cost and is not
+      a claim about Rex: SiteMinder (Sydney) occupies the hotel-side equivalent
+      of the GDS chokepoint between properties and OTAs; Qantas and Virgin
+      Australia form a duopoly with a long history of distribution disputes;
+      Jetstar is the direct-distribution low-cost arm; and Webjet, Flight Centre
+      and Corporate Travel Management are unusually large agency groups for the
+      market's size — all three appear by name in Rex's own agent-registration
+      TravelAgencyGroup dropdown, which is itself evidence of how concentrated
+      the Australian trade channel is.
+organization:
+  legalEntities:
+    - Regional Express Holdings Pty Ltd (ACN 099 547 270)
+    - Regional Express Pty Ltd (ACN 101 325 642)
+  iataCode: ZL
+  icaoCode: RXA
+  callsign: REX
+  headquarters: Mascot, New South Wales, Australia
+  ownership: >-
+    Acquired by US holding company Air T, completing 18 December 2025 and exiting
+    the voluntary administration Rex entered in July 2024. The Australian federal
+    government provided a AUD60m commercial loan, restructured AUD108m of debt
+    and acquired AUD50m of creditor debt, retaining oversight.
+  loyaltyProgram: Rex Flyer
+  technologyVendors:
+    - vendor: Sabre
+      product: SabreSonic passenger solutions suite (Inventory, Reservations, Ticketing, Ancillaries, Check-in)
+      source: https://www.asiatraveltips.com/news21/22-RexRegionalExpress.shtml
+    - vendor: EveryMundo / AirTRFX
+      product: flights.rex.com.au fare marketing pages
+      source: https://flights.rex.com.au/
+    - vendor: CarTrawler
+      product: car hire cross-sell embedded in booking flow
+      source: https://ibe2.rex.com.au/
+sources:
+  - url: https://www.rex.com.au/
+    type: Website
+    status: 200
+    fetched: '2026-07-28'
+  - url: https://www.rex.com.au/TravelAgent/Index.aspx
+    type: TravelAgentPortal
+    status: 200
+    fetched: '2026-07-28'
+  - url: https://www.rex.com.au/TravelAgent/agentregistration.aspx
+    type: TravelAgentRegistration
+    status: 200
+    fetched: '2026-07-28'
+    note: Source of the "Request API Access" checkbox and the published agent terms.
+  - url: https://www.rex.com.au/TravelAgent/faq.aspx
+    type: TravelAgentFAQ
+    status: 200
+    fetched: '2026-07-28'
+  - url: https://www.rex.com.au/site_terms.aspx
+    type: TermsOfService
+    status: 200
+    fetched: '2026-07-28'
+  - url: https://www.rex.com.au/privacy.aspx
+    type: PrivacyPolicy
+    status: 200
+    fetched: '2026-07-28'
+  - url: https://www.rex.com.au/FlightInfo/COC.aspx
+    type: ConditionsOfCarriage
+    status: 200
+    fetched: '2026-07-28'
+  - url: https://www.rex.com.au/rexflyer/RexFlyerTC.aspx
+    type: LoyaltyTermsOfService
+    status: 200
+    fetched: '2026-07-28'
+  - url: https://ibe2.rex.com.au/
+    type: BookingEngine
+    status: 200
+    fetched: '2026-07-28'
+  - url: https://mbe.rex.com.au/
+    type: ManageBooking
+    status: 200
+    fetched: '2026-07-28'
+  - url: https://flights.rex.com.au/
+    type: FareMarketingPages
+    status: 200
+    fetched: '2026-07-28'
+  - url: https://www.asiatraveltips.com/news21/22-RexRegionalExpress.shtml
+    type: PressCoverage
+    status: 200
+    fetched: '2026-07-28'
+    note: Mirror of the Sabre release confirming SabreSonic PSS scope.
+  - url: https://centreforaviation.com/news/regional-express-and-sabre-enhance-long-term-sabresonic-passenger-solutions-suite-agreement-1050661
+    type: PressCoverage
+    status: 200
+    fetched: '2026-07-28'
+  - url: https://duffel.com/ndc/airlines-and-ndc
+    type: ThirdPartyNDCRegistry
+    status: 200
+    fetched: '2026-07-28'
+    note: Rex/ZL absent; Qantas present.
+  - url: https://en.wikipedia.org/wiki/Rex_Airlines
+    type: Reference
+    status: 200
+    fetched: '2026-07-28'
+    note: Codes, fleet, network size, subsidiaries, Air T acquisition, interline partners.
+actions:
+  apisListed: 0
+  apisYmlCreated: true
+  openapiHarvested: false
+  specsCount: 0
+  reason: >-
+    apis[] is deliberately empty. Rex publishes no documented API. The "Request
+    API Access" checkbox proves an interface exists but nothing about it is
+    published — no name, no base URL, no protocol, no reference documentation —
+    so listing it would require inventing facts. It is recorded here as
+    evidence instead, and the travel agent portal is carried in common[] where
+    it belongs.
