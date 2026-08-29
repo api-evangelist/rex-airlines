@@ -19,6 +19,17 @@ description: >-
   bare "Request API Access" checkbox on the agent registration form — accreditation
   required, contract unspecified, nothing documented, and no exit path beyond a
   privacy-law request to the Customer Contact Centre.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: accredited-or-licensed
